@@ -645,3 +645,25 @@ body{overflow:hidden;overscroll-behavior:none;}
 .visor video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
 .detalhe__palco{position:relative;}
 .detalhe__palco img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;}
+
+/* ============================================================
+   TERCEIRA RODADA — iOS: toque e sobreposições
+   Sintoma: depois de abrir a foto, a tela parecia travada.
+   Causas tratadas aqui:
+   1) O duplo toque na foto acionava o zoom nativo do Safari,
+      deslocando o viewport e deixando a interface fora de lugar.
+   2) Modal e folhas usavam position:fixed no celular, presas ao
+      viewport do navegador em vez do quadro da aplicação.
+============================================================ */
+
+/* Desliga o zoom por duplo toque, mantendo o de pinça */
+.aparelho,.aparelho *{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+
+/* Sobreposições passam a viver dentro do quadro do app, como no desktop */
+.aparelho__tela .modal,
+.aparelho__tela .offcanvas{position:absolute;}
+.aparelho__tela .modal-dialog{max-width:100%;margin:0;height:100%;}
+.modal-backdrop,.offcanvas-backdrop{display:none;}
+
+/* O corpo do modal precisa rolar se a tela for muito baixa */
+.detalhe{height:100%;overflow:hidden;}

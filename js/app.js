@@ -801,17 +801,39 @@ function abrirLink(url){
   document.body.appendChild(a); a.click(); a.remove();
 }
 
-function baixarFoto(midia){
-  const a = document.createElement('a');
-  if (arquivoPronto){
-    a.href = URL.createObjectURL(arquivoPronto);
-    a.download = arquivoPronto.name;
-  } else {
-    a.href = midia.caminho;
-    a.download = nomeArquivo(midia, midia.caminho.indexOf('image/svg') > -1 ? 'svg' : 'jpg');
+/* O Safari ignora o atributo download em endereços data:, então
+   sempre convertemos a imagem em blob antes de baixar.          */
+function uriParaBlob(uri){
+  const [cabecalho, corpo] = uri.split(',');
+  const tipo = (cabecalho.match(/data:([^;]+)/) || [null,'image/png'])[1];
+  if (cabecalho.indexOf('base64') > -1){
+    const bin = atob(corpo);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new Blob([bytes], { type:tipo });
   }
+  return new Blob([decodeURIComponent(corpo)], { type:tipo });
+}
+
+function baixarFoto(midia){
+  let url, nome;
+  try {
+    if (arquivoPronto){
+      url = URL.createObjectURL(arquivoPronto);
+      nome = arquivoPronto.name;
+    } else {
+      const ext = midia.caminho.indexOf('image/svg') > -1 ? 'svg' : 'jpg';
+      url = URL.createObjectURL(uriParaBlob(midia.caminho));
+      nome = nomeArquivo(midia, ext);
+    }
+  } catch (e) {
+    url = midia.caminho;
+    nome = nomeArquivo(midia, 'jpg');
+  }
+  const a = document.createElement('a');
+  a.href = url; a.download = nome;
   document.body.appendChild(a); a.click(); a.remove();
-  if (arquivoPronto) setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  if (url.indexOf('blob:') === 0) setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
 function textoDaFoto(midia){
@@ -829,13 +851,22 @@ function compartilhar(destino, detalhe, botao){
   ocupar(botao, true);
   vibrar(12);
 
-  // Caminho 1: compartilhamento nativo, com a imagem anexada.
-  if ((destino === 'WhatsApp' || destino === 'E-mail' || destino === 'Instagram Stories')
-      && podeEnviarArquivo()){
-    navigator.share({ files:[arquivoPronto], text: textoDaFoto(midia) })
+  // Caminho 1: compartilhamento nativo do aparelho.
+  const enviaNativo = destino === 'WhatsApp' || destino === 'E-mail'
+                   || destino === 'Instagram Stories';
+
+  if (enviaNativo && navigator.share){
+    const comArquivo = podeEnviarArquivo();
+    const dados = comArquivo
+      ? { files:[arquivoPronto], text: textoDaFoto(midia) }
+      : { title:'JOVI Moments', text: textoDaFoto(midia) };
+
+    navigator.share(dados)
       .then(() => {
         ocupar(botao, false);
-        concluirEnvio(midia, destino, 'A foto foi enviada com a imagem anexada.');
+        concluirEnvio(midia, destino, comArquivo
+          ? 'A foto foi enviada com a imagem anexada.'
+          : 'Enviado pelo compartilhamento do aparelho.');
       })
       .catch(() => {
         ocupar(botao, false);   // o usuário cancelou: volta para a lista
@@ -1029,7 +1060,6 @@ function ligarEventos(){
     palco.classList.toggle('zoom');
     e.currentTarget.setAttribute('aria-pressed', palco.classList.contains('zoom'));
   });
-  $('#detalhe-palco').addEventListener('dblclick', () => $('#detalhe-palco').classList.toggle('zoom'));
   $('#btn-favorito').addEventListener('click', () => {
     if (!estado.fotoAberta) return;
     estado.fotoAberta.favorito = !estado.fotoAberta.favorito;
