@@ -660,9 +660,11 @@ body{overflow:hidden;overscroll-behavior:none;}
 /* Desliga o zoom por duplo toque, mantendo o de pinça */
 .aparelho,.aparelho *{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 
-/* Sobreposições passam a viver dentro do quadro do app, como no desktop */
-.aparelho__tela .modal,
-.aparelho__tela .offcanvas{position:absolute;}
+/* O modal vive dentro do quadro do app. A folha NÃO pode virar
+   absolute no celular: o Bootstrap fecha toda offcanvas aberta que
+   não esteja em position:fixed sempre que a janela é redimensionada,
+   e abrir o teclado dispara exatamente esse evento. */
+.aparelho__tela .modal{position:absolute;}
 .aparelho__tela .modal-dialog{max-width:100%;margin:0;height:100%;}
 .modal-backdrop,.offcanvas-backdrop{display:none;}
 
@@ -692,3 +694,24 @@ body{overflow:hidden;overscroll-behavior:none;}
   align-items:center;
   justify-items:center;
 }
+
+/* No desktop não há teclado virtual, então a folha pode ficar
+   confinada ao aparelho sem risco de fechar sozinha. */
+@media (min-width:992px){
+  .aparelho__tela .offcanvas{position:absolute;}
+}
+
+/* ============================================================
+   BOTÃO CENTRAL DO MENU
+   Antes era um círculo flutuante com margem negativa: saltava
+   para fora da barra e desalinhava dos outros dois itens.
+   Agora é um item do mesmo tamanho, dentro da barra.
+============================================================ */
+.menu{grid-template-columns:1fr 1fr 1fr;}
+.menu__item--centro{
+  width:auto;height:auto;margin-top:0;border-radius:14px;
+  padding:7px 18px;gap:3px;
+  background:var(--azul);color:#fff;
+  box-shadow:0 4px 12px rgba(30,62,232,.32);
+}
+.menu__item--centro svg{width:20px;height:20px;}
