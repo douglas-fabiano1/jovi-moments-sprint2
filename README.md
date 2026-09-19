@@ -98,3 +98,30 @@ jovi-moments/
 - Texto digitado pelo usuário (nome do álbum) é escapado antes de ir para a tela
 - Excluir foto ou álbum pede um segundo toque de confirmação
 - A câmera é desligada ao sair da tela, inclusive se a permissão chegar atrasada
+
+
+## Correções aplicadas nos testes em aparelho real
+
+Cada item abaixo nasceu de um vídeo de teste gravado em celular.
+
+| Sintoma | Causa | Correção |
+|---|---|---|
+| Onboarding cortado no iPhone | Item flex não encolhe abaixo do conteúdo | `min-height:0` e ilustração em `position:absolute` |
+| Faixa fixa no rodapé do Safari | `100dvh` diferente da área visível | `.aparelho` em `position:fixed` no celular |
+| Tela travada ao abrir a foto | Duplo toque acionava o zoom nativo do Safari | `touch-action:manipulation` e remoção do atalho |
+| Folha de álbum fechava ao tocar no campo | O Bootstrap fecha toda offcanvas aberta que não esteja em `position:fixed` quando a janela é redimensionada, e o teclado dispara esse evento | Folha volta a `fixed` no celular; `absolute` só no desktop |
+| Folha escondida atrás do teclado | Navegador encolhe só a área visível | `--app-altura` medida pelo `visualViewport` |
+| Botão da câmera fora do eixo | `space-around` com itens de larguras diferentes | Menu em grid de três colunas |
+| Download não funcionava no iPhone | Safari ignora `download` em endereços `data:` | Imagem convertida em blob antes de baixar |
+
+## Como executar
+
+Abrir `index.html` direto no navegador já funciona: a câmera cai na captura
+simulada. Para liberar a câmera real e o compartilhamento com a imagem
+anexada, é preciso servir por HTTP:
+
+```
+python -m http.server 8000
+```
+
+E acessar `http://localhost:8000`.
