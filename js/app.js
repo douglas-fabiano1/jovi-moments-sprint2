@@ -926,6 +926,21 @@ function voltarDestinos(){
   $('#folha-opcoes').hidden = false;
 }
 
+/* ---------- 9b. TECLADO VIRTUAL ---------- */
+
+/** Mede quanto o teclado cobre da tela e publica em --teclado. */
+function acompanharTeclado(){
+  const vv = window.visualViewport;
+  if (!vv) return;
+  const medir = () => {
+    const coberto = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    document.documentElement.style.setProperty('--teclado', Math.round(coberto) + 'px');
+  };
+  vv.addEventListener('resize', medir);
+  vv.addEventListener('scroll', medir);
+  medir();
+}
+
 /* ---------- 10. INÍCIO DO APLICATIVO ---------- */
 
 function atualizarInicio(){
@@ -1081,7 +1096,10 @@ function ligarEventos(){
   $('#modal-detalhe').addEventListener('hidden.bs.modal', resetarExclusao);
   $('#btn-criar-album').addEventListener('click', confirmarNovoAlbum);
   $('#album-nome').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') confirmarNovoAlbum();
+    if (e.key === 'Enter'){ e.preventDefault(); $('#album-nome').blur(); confirmarNovoAlbum(); }
+  });
+  $('#album-nome').addEventListener('focus', () => {
+    setTimeout(() => $('#album-nome').scrollIntoView({ block:'center' }), 320);
   });
   $('#btn-compartilhar').addEventListener('click', () => {
     $('#folha-img').src = estado.fotoAberta ? estado.fotoAberta.caminho : '';
@@ -1106,12 +1124,13 @@ function ligarEventos(){
 function iniciar(){
   modalDetalhe = new bootstrap.Modal('#modal-detalhe');
   folhaCompartilhar = new bootstrap.Offcanvas('#folha-compartilhar');
-  folhaAlbum = new bootstrap.Offcanvas('#folha-album');
+  folhaAlbum = new bootstrap.Offcanvas('#folha-album', { backdrop:'static' });
 
   montarChipsModo();
   montarOpcoesAlbum();
   trocarModo(estado.modo);
   ligarEventos();
+  acompanharTeclado();
   atualizarInicio();
   abertura();
 }

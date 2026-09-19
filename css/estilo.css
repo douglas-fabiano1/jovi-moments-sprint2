@@ -667,3 +667,15 @@ body{overflow:hidden;overscroll-behavior:none;}
 
 /* O corpo do modal precisa rolar se a tela for muito baixa */
 .detalhe{height:100%;overflow:hidden;}
+
+/* ============================================================
+   TECLADO VIRTUAL
+   Ao abrir o teclado, o navegador encolhe apenas a área visível.
+   A folha de novo álbum ficava embaixo do teclado, fora de alcance.
+   A variável --teclado guarda a altura ocupada e levanta a folha.
+============================================================ */
+
+#folha-album{
+  bottom:var(--teclado,0px);
+  max-height:calc(95% - var(--teclado,0px));
+}
