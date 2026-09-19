@@ -636,8 +636,9 @@ body{overflow:hidden;overscroll-behavior:none;}
   body{background:var(--tinta);}
   .palco{display:block;height:auto;min-height:0;}
   .aparelho{
-    position:fixed;top:0;right:0;bottom:0;left:0;
-    width:auto;height:auto;max-width:none;
+    position:fixed;top:0;right:0;left:0;bottom:auto;
+    width:auto;max-width:none;
+    height:var(--app-altura,100dvh);
   }
 }
 
@@ -670,12 +671,24 @@ body{overflow:hidden;overscroll-behavior:none;}
 
 /* ============================================================
    TECLADO VIRTUAL
-   Ao abrir o teclado, o navegador encolhe apenas a área visível.
-   A folha de novo álbum ficava embaixo do teclado, fora de alcance.
-   A variável --teclado guarda a altura ocupada e levanta a folha.
+   Ao abrir o teclado, o navegador encolhe apenas a área visível e a
+   folha de novo álbum ficava embaixo dele. A solução é o quadro da
+   aplicação acompanhar essa altura (--app-altura), em vez de tentar
+   deslocar a folha isoladamente.
 ============================================================ */
 
-#folha-album{
-  bottom:var(--teclado,0px);
-  max-height:calc(95% - var(--teclado,0px));
+/* A folha não é mais deslocada: quem encolhe é o quadro da aplicação
+   inteiro (--app-altura), então o rodapé dela já fica acima do teclado. */
+
+/* ============================================================
+   MENU INFERIOR
+   Com justify-content:space-around o botão central saía do eixo,
+   porque "Início" e "Galeria" têm larguras diferentes. O grid de
+   três colunas garante o botão exatamente no centro da tela.
+============================================================ */
+.menu{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  justify-items:center;
 }

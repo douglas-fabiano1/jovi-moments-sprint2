@@ -928,16 +928,20 @@ function voltarDestinos(){
 
 /* ---------- 9b. TECLADO VIRTUAL ---------- */
 
-/** Mede quanto o teclado cobre da tela e publica em --teclado. */
+/** O quadro da aplicação segue a altura realmente visível, que
+    encolhe quando o teclado abre. Assim a folha e o menu nunca
+    ficam escondidos atrás dele.                                */
 function acompanharTeclado(){
-  const vv = window.visualViewport;
-  if (!vv) return;
   const medir = () => {
-    const coberto = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-    document.documentElement.style.setProperty('--teclado', Math.round(coberto) + 'px');
+    const vv = window.visualViewport;
+    const altura = Math.round(vv ? vv.height : window.innerHeight);
+    document.documentElement.style.setProperty('--app-altura', altura + 'px');
   };
-  vv.addEventListener('resize', medir);
-  vv.addEventListener('scroll', medir);
+  if (window.visualViewport){
+    window.visualViewport.addEventListener('resize', medir);
+  }
+  window.addEventListener('resize', medir);
+  window.addEventListener('orientationchange', () => setTimeout(medir, 250));
   medir();
 }
 
@@ -1097,9 +1101,6 @@ function ligarEventos(){
   $('#btn-criar-album').addEventListener('click', confirmarNovoAlbum);
   $('#album-nome').addEventListener('keydown', (e) => {
     if (e.key === 'Enter'){ e.preventDefault(); $('#album-nome').blur(); confirmarNovoAlbum(); }
-  });
-  $('#album-nome').addEventListener('focus', () => {
-    setTimeout(() => $('#album-nome').scrollIntoView({ block:'center' }), 320);
   });
   $('#btn-compartilhar').addEventListener('click', () => {
     $('#folha-img').src = estado.fotoAberta ? estado.fotoAberta.caminho : '';
