@@ -621,3 +621,27 @@ body{overflow:hidden;overscroll-behavior:none;}
   body{overflow:auto;}
   .palco{height:auto;min-height:100dvh;}
 }
+
+/* ============================================================
+   SEGUNDA RODADA DE CORREÇÕES PARA iOS
+   1) 100dvh no Safari não coincidia com a área visível, deixando
+      uma faixa azul fixa entre o app e a barra do navegador.
+      No celular o aparelho passa a ser fixed/inset:0, que casa
+      exatamente com o viewport do Safari.
+   2) O <video> da câmera tinha altura intrínseca e esticava o
+      visor, empurrando o obturador para fora da tela.
+============================================================ */
+
+@media (max-width:991px){
+  body{background:var(--tinta);}
+  .palco{display:block;height:auto;min-height:0;}
+  .aparelho{
+    position:fixed;top:0;right:0;bottom:0;left:0;
+    width:auto;height:auto;max-width:none;
+  }
+}
+
+/* Mídias não podem mais ditar a altura do bloco que as contém */
+.visor video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.detalhe__palco{position:relative;}
+.detalhe__palco img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;}
