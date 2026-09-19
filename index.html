@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E3EE8">
+<meta name="description" content="JOVI Moments - captura, organização e compartilhamento de fotos direto do navegador.">
+<title>JOVI Moments</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231E3EE8'/%3E%3Ccircle cx='16' cy='17' r='6' fill='none' stroke='white' stroke-width='2.5'/%3E%3Crect x='11' y='7' width='10' height='3' rx='1.5' fill='white'/%3E%3C/svg%3E">
+
+<!-- Bootstrap 5 (CSS) -->
+<link href="vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/estilo.css">
+</head>
+
+<body>
+
+<!-- ============================================================
+     MOLDURA: no celular ocupa a tela toda; no desktop vira um
+     aparelho JOVI centralizado, para demonstrar o mobile first.
+============================================================ -->
+<div class="palco">
+
+  <aside class="palco__marca d-none d-xl-block">
+    <p class="palco__logo">JOVI<span>SMARTPHONE</span></p>
+    <h1 class="palco__titulo">Moments</h1>
+    <p class="palco__texto">
+      Capturar, ver e compartilhar sem trocar de aplicativo.
+      Tudo roda no navegador do celular.
+    </p>
+    <ul class="palco__lista">
+      <li>100% web, sem instalação</li>
+      <li>Galeria que se organiza sozinha</li>
+      <li>Resposta visual a cada toque</li>
+    </ul>
+    <p class="palco__dica">Use as setas do teclado ou o mouse dentro do aparelho.</p>
+  </aside>
+
+  <main class="aparelho" id="aparelho">
+    <div class="aparelho__tela">
+
+      <!-- ===================== 1. ABERTURA ===================== -->
+      <section tabindex="-1" class="tela tela--ativa tela--escura" id="tela-abertura">
+        <div class="abertura">
+          <p class="abertura__logo">JOVI<span>MOMENTS</span></p>
+          <div class="abertura__barra"><i id="abertura-progresso"></i></div>
+          <p class="abertura__status" id="abertura-status">Preparando a câmera</p>
+        </div>
+      </section>
+
+      <!-- =================== 2. BOAS-VINDAS ==================== -->
+      <section tabindex="-1" class="tela tela--escura" id="tela-onboarding">
+        <div class="onb">
+          <div class="onb__palco" id="onb-palco"><!-- ilustração via JS --></div>
+          <div class="onb__texto">
+            <h2 id="onb-titulo">Tratamento profissional na hora</h2>
+            <p id="onb-desc">Cores mais ricas e nitidez ajustadas automaticamente, usando 100% do potencial da câmera JOVI.</p>
+          </div>
+          <div class="onb__pontos" id="onb-pontos" role="tablist" aria-label="Passos da introdução"></div>
+          <div class="onb__acoes">
+            <button class="btn btn-jovi w-100" id="btn-onb-avancar">Continuar</button>
+            <button class="btn btn-vazio w-100" id="btn-onb-pular">Pular introdução</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== 3. INÍCIO ====================== -->
+      <section tabindex="-1" class="tela" id="tela-inicio">
+        <header class="topo">
+          <div>
+            <p class="topo__ola" id="inicio-saudacao">Bom dia</p>
+            <h2 class="topo__titulo">JOVI Moments</h2>
+          </div>
+          <span class="selo-conexao" id="selo-conexao">Pronto</span>
+        </header>
+
+        <div class="rolagem">
+          <button class="cartao-captura" id="btn-abrir-camera">
+            <span class="cartao-captura__icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M9 3.5 7.8 5.5H5A2.5 2.5 0 0 0 2.5 8v9A2.5 2.5 0 0 0 5 19.5h14A2.5 2.5 0 0 0 21.5 17V8A2.5 2.5 0 0 0 19 5.5h-2.8L15 3.5H9Zm3 4.9a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2Zm0 2a2.6 2.6 0 1 0 0 5.2 2.6 2.6 0 0 0 0-5.2Z"/></svg>
+            </span>
+            <span class="cartao-captura__texto">
+              <strong>Capturar foto</strong>
+              <small>Tratamento automático ao salvar</small>
+            </span>
+          </button>
+
+          <button class="cartao-linha" id="btn-abrir-galeria">
+            <span class="cartao-linha__icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2v8.2l3.6-3.4 3.1 2.9 3.7-4.2L19 14V7H5Zm3.4 1.1a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/></svg>
+            </span>
+            <span class="cartao-linha__texto">
+              <strong>Minha galeria</strong>
+              <small id="inicio-contagem">0 fotos</small>
+            </span>
+            <span class="cartao-linha__seta" aria-hidden="true">›</span>
+          </button>
+
+          <h3 class="secao">Como o Moments ajuda</h3>
+          <ul class="beneficios">
+            <li>
+              <span class="beneficios__marca" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M13 2 4 13.5h6L11 22l9-11.5h-6L13 2Z"/></svg>
+              </span>
+              <div><strong>Tratamento automático</strong><p>Cor, nitidez e contraste ajustados no momento da captura.</p></div>
+            </li>
+            <li>
+              <span class="beneficios__marca" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M3 5h8v6H3V5Zm10 0h8v6h-8V5ZM3 13h8v6H3v-6Zm10 0h8v6h-8v-6Z"/></svg>
+              </span>
+              <div><strong>Modos inteligentes</strong><p>Estudo, trabalho ou social: escolha e a foto já sai pronta.</p></div>
+            </li>
+            <li>
+              <span class="beneficios__marca" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M18 16.1a2.9 2.9 0 0 0-2 .8l-7.1-4.1a3 3 0 0 0 0-1.6L16 7.1a2.9 2.9 0 1 0-1-2.2c0 .3 0 .5.1.8L7.9 9.8a3 3 0 1 0 0 4.4l7.2 4.2a2.9 2.9 0 1 0 2.9-2.3Z"/></svg>
+              </span>
+              <div><strong>Compartilhamento em 2 toques</strong><p>Da galeria direto para o WhatsApp, Stories ou e-mail.</p></div>
+            </li>
+          </ul>
+
+          <div class="painel-desempenho">
+            <div class="painel-desempenho__linha">
+              <span>Espaço economizado</span>
+              <strong id="perf-espaco">0 KB</strong>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Espaço economizado com otimização" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" id="perf-barra" style="width:0%"></div>
+            </div>
+            <p class="painel-desempenho__nota" id="perf-nota">Cada foto é otimizada antes de entrar na galeria.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== 4. CÂMERA ====================== -->
+      <section tabindex="-1" class="tela tela--escura" id="tela-camera">
+        <div class="camera">
+          <header class="camera__topo">
+            <button class="botao-icone" id="btn-camera-voltar" aria-label="Voltar para o início">‹</button>
+            <div class="camera__titulo">
+              <strong id="camera-modo-nome">Modo estudo</strong>
+              <small id="camera-modo-dica">Cadernos, notas e telas</small>
+            </div>
+            <button class="botao-icone" id="btn-grade" aria-pressed="true" aria-label="Mostrar ou ocultar grade de composição">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3 3h18v2H3V3Zm0 16h18v2H3v-2ZM3 3h2v18H3V3Zm16 0h2v18h-2V3ZM3 9h18v1.4H3V9Zm0 4.6h18V15H3v-1.4ZM9 3h1.4v18H9V3Zm4.6 0H15v18h-1.4V3Z"/></svg>
+            </button>
+          </header>
+
+          <div class="visor" id="visor">
+            <video id="video" playsinline muted autoplay></video>
+            <div class="visor__cena" id="visor-cena"></div>
+            <div class="visor__grade" id="visor-grade"><i></i><i></i><i></i><i></i></div>
+            <div class="visor__flash" id="visor-flash"></div>
+            <p class="visor__aviso" id="visor-aviso">Câmera simulada</p>
+            <div class="visor__foco" id="visor-foco"></div>
+          </div>
+
+          <div class="camera__base">
+            <div class="chips" id="chips-modo" role="tablist" aria-label="Modos de captura"></div>
+
+            <button class="realce" id="btn-realce" aria-pressed="true">
+              <span class="realce__ponto"></span> Auto-realce JOVI
+            </button>
+
+            <div class="obturador-linha">
+              <span class="miniatura" id="miniatura-ultima" aria-hidden="true"></span>
+              <button class="obturador" id="btn-obturador" aria-label="Tirar foto"><i></i></button>
+              <button class="botao-icone botao-icone--claro" id="btn-virar" aria-label="Alternar câmera frontal e traseira">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 6V3.5L7.5 8 12 12.5V10a5 5 0 0 1 4.6 7 1 1 0 0 0 1.7 1A7 7 0 0 0 12 6Zm0 12v2.5L16.5 16 12 11.5V14a5 5 0 0 1-4.6-7 1 1 0 1 0-1.7-1A7 7 0 0 0 12 18Z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== 5. PREVIEW ===================== -->
+      <section tabindex="-1" class="tela tela--escura" id="tela-preview">
+        <header class="topo topo--escuro">
+          <button class="botao-icone" id="btn-preview-voltar" aria-label="Descartar e voltar à câmera">‹</button>
+          <h2 class="topo__titulo topo__titulo--claro">Antes e depois</h2>
+          <button class="btn-texto" id="btn-salvar">Salvar</button>
+        </header>
+
+        <div class="comparador" id="comparador">
+          <img class="comparador__img comparador__img--depois" id="img-depois" alt="Foto com tratamento JOVI aplicado">
+          <div class="comparador__corte" id="comparador-corte">
+            <img class="comparador__img comparador__img--antes" id="img-antes" alt="Foto sem tratamento">
+          </div>
+          <span class="comparador__aviso">Auto-realce estava desligado</span>
+          <span class="comparador__marca comparador__marca--esq">Antes</span>
+          <span class="comparador__marca comparador__marca--dir">Depois JOVI</span>
+          <div class="comparador__alca" id="comparador-alca" aria-hidden="true"><i></i></div>
+          <input type="range" min="0" max="100" value="50" id="comparador-range"
+                 class="comparador__range" aria-label="Comparar foto antes e depois do tratamento">
+        </div>
+
+        <div class="preview__rodape">
+          <div class="ficha" id="ficha-otimizacao">
+            <div class="ficha__linha"><span>Tamanho</span><strong id="ficha-tamanho">—</strong></div>
+            <div class="ficha__linha"><span>Otimização</span><strong id="ficha-tempo">—</strong></div>
+            <div class="ficha__linha"><span>Contexto</span><strong id="ficha-contexto">—</strong></div>
+            <div class="ficha__linha"><span>Auto-realce</span><strong id="ficha-realce">—</strong></div>
+          </div>
+          <button class="btn btn-jovi w-100" id="btn-salvar-grande">Salvar na galeria</button>
+          <button class="btn btn-vazio w-100" id="btn-descartar">Descartar</button>
+        </div>
+      </section>
+
+      <!-- ====================== 6. GALERIA ===================== -->
+      <section tabindex="-1" class="tela" id="tela-galeria">
+        <header class="topo">
+          <div>
+            <p class="topo__ola">Tudo separado por data e tipo</p>
+            <h2 class="topo__titulo">Galeria</h2>
+          </div>
+        </header>
+
+        <div class="abas" role="tablist" aria-label="O que mostrar na galeria">
+          <button class="aba aba--ativa" id="aba-fotos" role="tab" aria-selected="true">
+            Fotos <small id="aba-fotos-n">0</small>
+          </button>
+          <button class="aba" id="aba-albuns" role="tab" aria-selected="false">
+            Álbuns <small id="aba-albuns-n">0</small>
+          </button>
+        </div>
+
+        <div class="chips chips--filtro" id="chips-filtro" role="tablist" aria-label="Filtrar as fotos"></div>
+
+        <div class="rolagem rolagem--galeria">
+          <div class="resumo" id="resumo-filtro" hidden>
+            <p id="resumo-texto"></p>
+            <button class="btn btn-jovi btn-sm" id="btn-resumo-album">Criar álbum</button>
+          </div>
+
+          <div class="sugestao" id="sugestao" hidden>
+            <div class="sugestao__cabeca">
+              <span class="sugestao__icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M13 2 4 13.5h6L11 22l9-11.5h-6L13 2Z"/></svg>
+              </span>
+              <p id="sugestao-texto">Álbum sugerido</p>
+            </div>
+            <div class="sugestao__acoes">
+              <button class="btn btn-jovi btn-sm" id="btn-sugestao-aceitar">Criar álbum</button>
+              <button class="btn btn-vazio btn-sm" id="btn-sugestao-dispensar">Agora não</button>
+            </div>
+          </div>
+
+          <div class="grade" id="grade-fotos"></div>
+
+          <div class="albuns" id="lista-albuns" hidden></div>
+
+          <div class="vazio" id="galeria-vazia" hidden>
+            <p><strong>Nenhuma foto por aqui ainda.</strong></p>
+            <p>Capture a primeira: ela entra separada por data e pelo tipo
+            escolhido na câmera — estudo, trabalho ou social.</p>
+            <button class="btn btn-jovi" id="btn-vazio-capturar">Abrir a câmera</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================ BARRA DE NAVEGAÇÃO ================== -->
+      <nav class="menu" id="menu" hidden aria-label="Navegação principal">
+        <button class="menu__item" data-ir="tela-inicio">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3 3 10.2V21h6v-6h6v6h6V10.2L12 3Z"/></svg>
+          Início
+        </button>
+        <button class="menu__item menu__item--centro" data-ir="tela-camera" aria-label="Abrir a câmera">
+          <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M9 3.5 7.8 5.5H5A2.5 2.5 0 0 0 2.5 8v9A2.5 2.5 0 0 0 5 19.5h14A2.5 2.5 0 0 0 21.5 17V8A2.5 2.5 0 0 0 19 5.5h-2.8L15 3.5H9Zm3 4.9a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2Z"/></svg>
+        </button>
+        <button class="menu__item" data-ir="tela-galeria">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2v8.2l3.6-3.4 3.1 2.9 3.7-4.2L19 14V7H5Z"/></svg>
+          Galeria
+        </button>
+      </nav>
+
+      <!-- ============== DETALHE DA FOTO (modal) =============== -->
+      <div class="modal fade" id="modal-detalhe" tabindex="-1" aria-labelledby="detalhe-titulo" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content detalhe">
+            <header class="detalhe__topo">
+              <button class="botao-icone" data-bs-dismiss="modal" aria-label="Fechar">‹</button>
+              <div>
+                <h2 class="detalhe__titulo" id="detalhe-titulo">Foto</h2>
+                <p class="detalhe__data" id="detalhe-data"></p>
+              </div>
+              <button class="botao-icone" id="btn-zoom" aria-pressed="false" aria-label="Aproximar a foto">
+                <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M10 3a7 7 0 1 1-4.9 12l-2.4 2.4-1.4-1.4L3.7 13.6A7 7 0 0 1 10 3Zm0 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm-1 2h2v2h2v2h-2v2H9v-2H7V9h2V7Z"/></svg>
+              </button>
+            </header>
+            <div class="detalhe__palco" id="detalhe-palco">
+              <img id="detalhe-img" alt="">
+            </div>
+            <div class="detalhe__acoes">
+              <button class="acao" id="btn-favorito" aria-pressed="false">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="m12 20.3-1.4-1.3C5.4 14.3 2 11.3 2 7.6A4.6 4.6 0 0 1 6.6 3c1.6 0 3.1.7 4 2 .9-1.3 2.4-2 4-2A4.6 4.6 0 0 1 19.2 7.6c0 3.7-3.4 6.7-8.6 11.4L12 20.3Z"/></svg>
+                <span id="btn-favorito-texto">Favoritar</span>
+              </button>
+              <button class="acao" id="btn-album">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M3 6h6l2 2h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm9 5v3H9v2h3v3h2v-3h3v-2h-3v-3h-2Z"/></svg>
+                Álbum
+              </button>
+              <button class="acao acao--perigo" id="btn-excluir-foto">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M9 3h6l1 2h4v2H4V5h4l1-2ZM6 9h12l-1 11a2 2 0 0 1-2 1.8H9A2 2 0 0 1 7 20L6 9Zm4 2v8h2v-8h-2Zm4 0v8h2v-8h-2Z"/></svg>
+                <span id="btn-excluir-texto">Excluir</span>
+              </button>
+              <button class="acao acao--forte" id="btn-compartilhar">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M18 16.1a2.9 2.9 0 0 0-2 .8l-7.1-4.1a3 3 0 0 0 0-1.6L16 7.1a2.9 2.9 0 1 0-1-2.2c0 .3 0 .5.1.8L7.9 9.8a3 3 0 1 0 0 4.4l7.2 4.2a2.9 2.9 0 1 0 2.9-2.3Z"/></svg>
+                Compartilhar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ COMPARTILHAR (offcanvas) =============== -->
+      <div class="offcanvas offcanvas-bottom folha" tabindex="-1" id="folha-compartilhar" aria-labelledby="folha-titulo">
+        <div class="offcanvas-header folha__topo">
+          <div>
+            <h2 class="folha__titulo" id="folha-titulo">Compartilhar</h2>
+            <p class="folha__sub">Com a identidade JOVI aplicada</p>
+          </div>
+          <button type="button" class="botao-icone" data-bs-dismiss="offcanvas" aria-label="Fechar">✕</button>
+        </div>
+        <div class="offcanvas-body folha__corpo">
+          <div id="folha-opcoes">
+            <div class="folha__previa"><img id="folha-img" alt=""><span class="marca-jovi">JOVI<i>moments</i></span></div>
+            <button type="button" class="destino destino--whats" data-destino="WhatsApp" data-detalhe="Abre a conversa com a foto">WhatsApp<small>Abre a conversa com a foto</small></button>
+            <button type="button" class="destino destino--insta" data-destino="Instagram Stories" data-detalhe="Baixa a imagem pronta para o Stories">Instagram Stories<small>Baixa a imagem pronta para o Stories</small></button>
+            <button type="button" class="destino destino--mail" data-destino="E-mail" data-detalhe="Abre um rascunho no seu app de e-mail">E-mail<small>Abre um rascunho no seu app de e-mail</small></button>
+            <button type="button" class="destino destino--limpo" data-destino="Arquivo salvo" data-detalhe="Baixa a foto sem a marca">Salvar no aparelho<small>Sem a marca JOVI</small></button>
+            <p class="folha__nota">A marca JOVI ajuda a identificar suas fotos tratadas profissionalmente.</p>
+            <button type="button" class="btn btn-vazio w-100" data-bs-dismiss="offcanvas">Cancelar</button>
+          </div>
+
+          <div class="fim" id="folha-fim" hidden>
+            <span class="fim__marca" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26"><path fill="currentColor" d="M9.5 17.6 4.4 12.5l1.7-1.7 3.4 3.4 8-8 1.7 1.7-9.7 9.7Z"/></svg>
+            </span>
+            <h3 class="fim__titulo" id="fim-titulo">Compartilhado</h3>
+            <p class="fim__texto" id="fim-texto"></p>
+            <button class="btn btn-jovi w-100" id="btn-fim-concluir">Concluir</button>
+            <button class="btn btn-vazio w-100" id="btn-fim-voltar">Escolher outro destino</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ NOVO ÁLBUM (offcanvas) ================= -->
+      <div class="offcanvas offcanvas-bottom folha" tabindex="-1" id="folha-album" aria-labelledby="folha-album-titulo">
+        <div class="offcanvas-header folha__topo">
+          <div>
+            <h2 class="folha__titulo" id="folha-album-titulo">Novo álbum</h2>
+            <p class="folha__sub">Um álbum junta sozinho todas as fotos de um tipo</p>
+          </div>
+          <button type="button" class="botao-icone" data-bs-dismiss="offcanvas" aria-label="Fechar">✕</button>
+        </div>
+        <div class="offcanvas-body folha__corpo">
+          <label class="campo__rotulo" for="album-nome">Nome do álbum</label>
+          <input class="campo" id="album-nome" type="text" maxlength="34" placeholder="Ex.: Provas de junho">
+          <span class="campo__rotulo">Que fotos este álbum reúne</span>
+          <div class="opcoes" id="album-contexto" role="radiogroup" aria-label="Tipo de foto do álbum"></div>
+          <p class="folha__nota folha__nota--esq" id="album-resumo"></p>
+          <button class="btn btn-jovi w-100" id="btn-criar-album">Criar álbum</button>
+          <button type="button" class="btn btn-vazio w-100" data-bs-dismiss="offcanvas">Cancelar</button>
+        </div>
+      </div>
+
+      <!-- ================== AVISOS (toasts) ================== -->
+      <div class="aviso-area" id="aviso-area" aria-live="polite" aria-atomic="true"></div>
+
+    </div>
+  </main>
+</div>
+
+<canvas id="tela-oculta" hidden></canvas>
+
+<!-- Bootstrap 5 (JS) -->
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
