@@ -575,3 +575,49 @@ button{font-family:inherit;}
 #folha-compartilhar .destino{padding:11px 16px;margin-bottom:7px;}
 #folha-compartilhar .folha__nota{margin-top:8px;}
 #folha-compartilhar .folha__corpo{padding-bottom:18px;}
+
+/* ============================================================
+   CORREÇÕES PARA iOS / SAFARI E TELAS BAIXAS
+   Problema: em flexbox, um item com flex:1 não encolhe abaixo do
+   tamanho do seu conteúdo (min-height:auto). A ilustração do
+   onboarding empurrava os botões para fora da tela no iPhone.
+============================================================ */
+
+html,body{height:100%;}
+body{overflow:hidden;overscroll-behavior:none;}
+.palco{height:100dvh;min-height:0;}
+
+/* Deixa os blocos flexíveis realmente encolherem */
+.rolagem,.onb__palco,.visor,.detalhe__palco,.comparador{min-height:0;}
+
+/* A imagem não pode mais ditar a altura do bloco */
+.onb{overflow-y:auto;}
+.onb__palco{position:relative;flex:1 1 auto;min-height:110px;}
+.onb__palco img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+
+/* Respeita a ilha dinâmica e o indicador de início do iPhone */
+.topo,.camera__topo{padding-top:calc(20px + env(safe-area-inset-top,0px));}
+.detalhe__topo{padding-top:calc(18px + env(safe-area-inset-top,0px));}
+.menu{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));}
+.camera__base{padding-bottom:calc(22px + env(safe-area-inset-bottom,0px));}
+.preview__rodape{padding-bottom:calc(22px + env(safe-area-inset-bottom,0px));}
+.detalhe__acoes{padding-bottom:calc(26px + env(safe-area-inset-bottom,0px));}
+.folha__corpo{padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));}
+
+/* Aparelhos com pouca altura ganham um layout mais compacto */
+@media (max-height:740px){
+  .onb{padding:18px 20px 22px;}
+  .onb__texto{padding-top:18px;}
+  .onb__texto h2{font-size:1.25rem;}
+  .onb__texto p{font-size:.88rem;margin-top:8px;}
+  .onb__pontos{margin:14px 0;}
+  .btn-jovi{padding:12px 18px;}
+  .cartao-captura{padding:16px;}
+  .beneficios li{padding:9px 0;}
+}
+
+/* No desktop o aparelho continua com altura fixa e a página pode rolar */
+@media (min-width:992px){
+  body{overflow:auto;}
+  .palco{height:auto;min-height:100dvh;}
+}

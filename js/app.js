@@ -220,6 +220,7 @@ async function ligarCamera(){
     }
     fluxoVideo = fluxo;
     video.srcObject = fluxoVideo;
+    video.play().catch(() => {});   // o Safari às vezes precisa do play explícito
     visor.classList.add('tem-video');
     estado.cameraReal = true;
     atualizarCena();
